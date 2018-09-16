@@ -52,6 +52,7 @@ public class MainFragment extends Fragment {
         mViewModel.init();
         LiveData<List<Category>> liveData = mViewModel.getCategories();
         liveData.observe(getActivity(), (List<Category> categoriesData) -> {
+                categories.clear();
                 categories.addAll(categoriesData);
                 adapter.notifyDataSetChanged();
 

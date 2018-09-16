@@ -1,6 +1,7 @@
 package com.example.divya.kotlinlearningjava.ui.main;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 
@@ -18,6 +19,7 @@ import com.example.divya.kotlinlearningjava.R;
 import com.example.divya.kotlinlearningjava.adapter.CategoryAdapter;
 import com.example.divya.kotlinlearningjava.model.Category;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainFragment extends Fragment {
@@ -25,6 +27,7 @@ public class MainFragment extends Fragment {
     private MainViewModel mViewModel;
     private RecyclerView recyclerView;
     private CategoryAdapter adapter;
+    private List<Category> categories = new ArrayList<>();
 
     public static MainFragment newInstance() {
         return new MainFragment();
@@ -37,7 +40,7 @@ public class MainFragment extends Fragment {
         View view = inflater.inflate(R.layout.main_fragment, container, false);
         recyclerView = view.findViewById(R.id.categoryList);
         recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
-        adapter = new CategoryAdapter();
+        adapter = new CategoryAdapter(categories);
         recyclerView.setAdapter(adapter);
         return view;
     }
@@ -46,10 +49,20 @@ public class MainFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        mViewModel.init();
         LiveData<List<Category>> liveData = mViewModel.getCategories();
-        liveData.observe(getActivity(), (List<Category> categories) -> {
-            adapter.setData(categories);
-            adapter.notifyDataSetChanged();
+//        liveData.observe(getActivity(), (List<Category> categories) -> {
+//            adapter.setData(categories);
+//            adapter.notifyDataSetChanged();
+//        });
+
+        liveData.observe(getActivity(), new Observer<List<Category>>() {
+            @Override
+            public void onChanged(@Nullable List<Category> categoriesData) {
+                categories.addAll(categoriesData);
+                adapter.notifyDataSetChanged();
+
+            }
         });
 
     }

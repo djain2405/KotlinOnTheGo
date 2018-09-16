@@ -17,16 +17,11 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
     private static final String LOG_TAG = "CategoryAdapter";
     List<Category> categories;
-    public CategoryAdapter() {
-        categories = new ArrayList<>();
+    public CategoryAdapter(List<Category> list) {
+        categories = list;
+        Log.d(LOG_TAG, "CategoryAdapter() size" + categories.size());
     }
 
-    public void setData(List<Category> list)
-    {
-        categories.clear();
-        categories.addAll(list);
-        Log.d(LOG_TAG, "setData() size" + categories.size());
-    }
 
     @Override
     public CategoryViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

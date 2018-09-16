@@ -51,18 +51,10 @@ public class MainFragment extends Fragment {
         mViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
         mViewModel.init();
         LiveData<List<Category>> liveData = mViewModel.getCategories();
-//        liveData.observe(getActivity(), (List<Category> categories) -> {
-//            adapter.setData(categories);
-//            adapter.notifyDataSetChanged();
-//        });
-
-        liveData.observe(getActivity(), new Observer<List<Category>>() {
-            @Override
-            public void onChanged(@Nullable List<Category> categoriesData) {
+        liveData.observe(getActivity(), (List<Category> categoriesData) -> {
                 categories.addAll(categoriesData);
                 adapter.notifyDataSetChanged();
 
-            }
         });
 
     }
